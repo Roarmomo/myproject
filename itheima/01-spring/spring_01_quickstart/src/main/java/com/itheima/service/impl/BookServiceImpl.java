@@ -8,7 +8,7 @@ public class BookServiceImpl implements BookService {
     private BookDao bookDao;
 
     public void save() {
-        System.out.println("book service save ...");
+        System.out.println("book service save 666...");
         bookDao.save();
     }
     //6.提供对应的set方法
