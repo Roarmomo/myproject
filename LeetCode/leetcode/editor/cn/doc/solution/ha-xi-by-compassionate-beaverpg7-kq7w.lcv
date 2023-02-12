@@ -1,0 +1,69 @@
+首先是运行结果：
+![屏幕截图 2022-10-21 165254.png](https://pic.leetcode.cn/1666342476-cPaqak-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202022-10-21%20165254.png)
+
+一开始我用的是暴力双层for循环解了出来，但发现运行用了70ms，只超过了百分之五的人......于是就去看了题解，知道了还可以用哈希表（小白，刚开始刷leetcode），于是就自己用哈希表再写了一遍，这次确实快了很多，但是2ms的速度还是只能超过百分之七十多的人。于是我就好奇这还有比哈希表更快的吗？我翻题解好像也都是哈希表，直到我找到了这个运行时间超过百分百的代码，才知道还可以这样玩，原代码如下：
+
+* java
+
+```java
+class Solution {
+    public static int[] twoSum(int[] nums,int target){
+        int n=nums.length;
+        int result[]=new int[2];
+        HashMap<Integer,Integer> map=new HashMap<>();
+        for(int i=0,j=n-1;i<=j;i++,j--){
+            if(nums[i]+nums[j]==target){
+                result[0]=i;
+                result[1]=j;
+                break;
+            }
+            int x=target-nums[i];
+            if(map.containsKey(x)){
+                result[0]=i;
+                result[1]=map.get(x);
+                break;
+            }
+            int y=target-nums[j];
+            if(map.containsKey(y)){
+                result[0]=j;
+                result[1]=map.get(y);
+                break;
+            }
+            map.put(nums[i],i);
+            map.put(nums[j],j);
+        }
+        return result;
+    }
+    
+}
+```
+
+他在原来哈希表的基础上再加上了从两边同时开始遍历，直接让速度翻了一倍！我直接膜拜......
+
+我就按照他的思路自己写了一遍，一开始我是想省略上面的代码的第一个if判断的，后面发现不行，遇到[3, 3]这种情况哈希表还没存进去，就要出答案的情况就会报错，所以第一个if是必要的（大佬还是大佬）
+（确实我一开始还不想带那个for循环条件里面的i<=j的等号，但是去掉了就没办法判断数组长度是单数而且一个答案正好在中间的情况了）
+以下是我自己按他思路来改进的代码，写的紧凑了一点。记录一下，提醒我还有同时从两边开始这个骚操作。
+
+* java
+
+```java
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        int[] ans = new int[2];
+        for (int i = 0,j = nums.length - 1;i <= j;i++,j--){
+            if (nums[i] + nums[j] == target) return new int[]{j, i};
+            if (map.containsKey(target-nums[i])){
+                return new int[]{map.get(target-nums[i]), i};
+            }
+            if (map.containsKey(target-nums[j])){
+                return new int[]{map.get(target-nums[j]), j};
+            }
+            map.put(nums[i], i);
+            map.put(nums[j], j);
+        }
+        return null;
+    }
+}
+```
+
