@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.roarmomo.dao.RoarmomoDao">
+
+    <select id="queryByName" parameterType="RoarmomoBFO" resultType="RoarmomoBFO">
+        select *
+        from roarmomo_income
+        where 1=1
+
+        <if test="name != null and name != ''">
+            and name = #{name}
+        </if>
+        <if test="year != null and year != ''">
+            and year = #{year}
+        </if>
+        <if test="month != null and month != ''">
+            and month = #{month}
+        </if>
+        <if test="incomepre != null and incomepre != ''">
+            and incomepre = #{incomepre}
+        </if>
+        <if test="incomeafter != null and incomeafter != ''">
+            and incomeafter = #{incomeafter}
+        </if>
+        <if test="fundsum != null and fundsum != ''">
+            and fundsum = #{fundsum}
+        </if>
+        <if test="medicalinsurancesum != null and medicalinsurancesum != ''">
+            and medicalinsurancesum = #{medicalinsurancesum}
+        </if>
+        <if test="tax != null and tax != ''">
+            and tax = #{tax}
+        </if>
+        <if test="taxsum != null and taxsum != ''">
+            and taxsum = #{taxsum}
+        </if>
+
+    </select>
+
+    <insert id="save" parameterType="RoarmomoBFO">
+        insert into roarmomo_income(name, year, month, incomepre, incomeafter, fundsum, medicalinsurancesum, tax, taxsum)
+        VALUES (#{name},#{year},#{month},#{incomepre},#{incomeafter},#{fundsum},#{medicalinsurancesum},#{tax},#{taxsum})
+    </insert>
+
+</mapper>
